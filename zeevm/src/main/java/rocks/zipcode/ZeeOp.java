@@ -105,7 +105,7 @@ class Stack {
     }
     Integer pop() {
             try {
-                if (stack.size() < 1) throw new Exception("ZeeVM Stack Underflow");
+                if (stack.isEmpty()) throw new Exception("ZeeVM Stack Underflow");
             } catch (Exception e) {
                 System.err.println(e);
                 e.printStackTrace();

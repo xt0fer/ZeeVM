@@ -8,6 +8,7 @@ Three classes.
 this is where `main` is. class has two responsibilies:
 
 - read in source code, and drop all lines which are comments
+  - comment lines start with ";;" or "//"
 - create the ZeeEngine and start it on the modified source
 - print out the machines last print buffer
 
@@ -35,4 +36,33 @@ Just like in https://github.com/xt0fer/Snowman, your job is to add `multiply` an
 
 Make it so that anything you add to `snowman` gets supported here in `ZeeVM`.
 
-*Java's VM, while a Lot More complicated, it pretty much like these two projects.*
+*Java's VM and compiler, while a **Lot More** complicated, is pretty much like these two projects.*
+
+## ZeeVM Instructions
+
+The VM has a single stack of Integers (32 bit signed).
+
+The instructions of the VM.
+
+- `START` - clears the stack of the VM
+- `HALT` - stops the VM
+- `NOP` - does nothing
+- `PRINT` - pops the top of the stack, converts the int into a string, and prints it on std out.
+
+- `PUSH #n` - pushes the integer after the # sign onto the stack
+- `ADD` - pops the top 2 integers, adds them, and pushes the sum back onto the stack
+- `SUB` - pops the top 2 integers and substracts the first one from the second
+  - (as in:  x<-pop(), y<-pop(), push(y-x). this is because the source was (SUBTRACT y x) )
+
+
+### Confused about #4 ?
+
+*why are numbers to be pushed formatted like "#3" and not just "3"??*
+
+Well, it is common in assembly languages for **immediate** values (integer literals),
+to be prefix'd with some char.
+That way, in the future, you could use regular literals to refer to a number register
+within the CPU. So, `PUSH 5` might mean *push the contents of register 5 to the stack*.
+But `PUSH #5` means *push the literal number 5 to the stack*.
+You could also then make memory address literals special by prefixing an @. (as in a memory location like "@00004F7f")
+When you write the labs, you can make arbitrary design choices like this. :-)
