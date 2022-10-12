@@ -2,6 +2,7 @@ package rocks.zipcode;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -116,3 +117,16 @@ class Stack {
     }
 }
 
+/**
+ * This class can be used for both the labelmap and variablemap.
+ */
+class StringIntMap {
+    HashMap<String,Integer> map = new HashMap<>();
+    public void put(String key, Integer value) {
+        map.put(key, value);
+    }
+    public Integer get(String key) {
+        Integer i = map.getOrDefault(key, 0);
+        return i;
+    }
+}

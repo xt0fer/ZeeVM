@@ -67,6 +67,10 @@ But `PUSH #5` means *push the literal number 5 to the stack*.
 You could also then make memory address literals special by prefixing an @. (as in a memory location like "@00004F7f")
 When you write the labs, you can make arbitrary design choices like this. :-)
 
+## Some extensions
+
+You cannot add these two extensions using `interface` and `implements`. The extension
+needs to use the stack within the enum. So you just have to add the ops and the code to the ZeeOp ENUM.
 
 ## Adding labels
 

@@ -10,6 +10,7 @@ public class ZeeEngine {
         while (pc < source.length) {
             String line = source[pc];
             pc++;
+            
             op = this.interpretInstruction(line);
             if (op == ZeeOp.HALT) break;
             if (op == ZeeOp.PRINT) 
