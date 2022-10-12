@@ -5,8 +5,11 @@ public class ZeeEngine {
     public String interpret(String lines) {
         ZeeOp op;
         String[] source = lines.split("\n");
+        Integer pc = 0;
 
-        for (String line : source) {
+        while (pc < source.length) {
+            String line = source[pc];
+            pc++;
             op = this.interpretInstruction(line);
             if (op == ZeeOp.HALT) break;
             if (op == ZeeOp.PRINT) 
