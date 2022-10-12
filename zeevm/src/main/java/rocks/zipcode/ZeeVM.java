@@ -22,6 +22,7 @@ public class ZeeVM
                 String line = scanner.nextLine().trim().toLowerCase();
                 // if line is comment, drop it.
                 if (line.startsWith(";;")) continue;
+                if (line.startsWith("//")) continue;
                 input.append(line + "\n");
             }
             scanner.close();
