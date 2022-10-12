@@ -32,7 +32,7 @@ There is also a hashmap of strings to operations, so that the string input from 
 
 ### What do I do?
 
-Just like in https://github.com/xt0fer/Snowman, your job is to add `multiply` and `divide` to the VM so it can handle code generated from your modified `snowman` compiler.
+Just like in https://github.com/xt0fer/Snowman, your job is to add `multiply`, `divide` and `mod` to the VM so it can handle code generated from your modified `snowman` compiler.
 
 Make it so that anything you add to `snowman` gets supported here in `ZeeVM`.
 

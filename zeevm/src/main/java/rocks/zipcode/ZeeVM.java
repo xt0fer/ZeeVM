@@ -20,6 +20,7 @@ public class ZeeVM
             StringBuilder input = new StringBuilder();
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine().trim().toLowerCase();
+                if (line.isEmpty()) continue;
                 // if line is comment, drop it.
                 if (line.startsWith(";;")) continue;
                 if (line.startsWith("//")) continue;
@@ -30,7 +31,7 @@ public class ZeeVM
             ZeeEngine engine = new ZeeEngine();
             String result = engine.interpret(input.toString());
             System.out.println(result);
-            
+
         } catch (FileNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

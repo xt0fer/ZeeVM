@@ -1,9 +1,17 @@
+;; Input code: (print (add 2 (subtract 4 2)))
 ;; Begin program code
                 START
+
+
+
                 PUSH #2
+
+
                 PUSH #4
+
                 PUSH #2
                 SUBTRACT
                 ADD
                 PRINT
+;; exit program
                 HALT
