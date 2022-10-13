@@ -78,6 +78,9 @@ labelmap is a hashtable <string, integer>
 
 `LABEL name` - declares a label, using the line position in the file. store in labelmap
 `JUMP name` - sets the PC to the line postion of labelmap(name)+1, execution continues from there.
+
+And maybe add these to label support?
+
 `IFTRUE name` - pops TOS and jumps to name if the value is non-zero
 `IFFALSE name` - pops TOS and jumps to name is value is zero
 

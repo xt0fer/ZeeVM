@@ -50,6 +50,11 @@ public enum ZeeOp {
                 ZeeOp.printBuffer = p;
         }
     },
+    DEBUG("debug"){
+        public void execute(String[] args) {
+            if (_DEBUG) System.err.println( String.join(" ", args));
+        }
+    },
     PUSH("push"){
         public void execute(String[] args) {
             // in this Op, args[1] will be like "#4",
@@ -59,15 +64,61 @@ public enum ZeeOp {
         }
     },
     // etc...
+    DUPE("dupe"){ // duplicate the top of the stack
+        public void execute(String[] args) {
+            Integer i = operandStack.pop();
+            operandStack.push(i);
+            operandStack.push(i);
+        }
+    },
+
+    LOAD("load"){
+        public void execute(String[] args) {
+            String varname = args[1];
+            Integer val = variablemap.get(varname);
+            operandStack.push(val);
+        }
+    },
+    STORE("store"){
+        public void execute(String[] args) {
+            String varname = args[1];
+            variablemap.put(varname, operandStack.pop());
+        }
+    },
+    LABEL("label"){
+        public void execute(String[] args) {
+            //this is a NOP in execution
+        }
+    },
+    JUMP("jump"){
+        public void execute(String[] args) {
+            String target = args[1];
+            ZeeOp.programCounter = labelmap.get(target);
+        }
+    },
+    JMPZ("jmpz"){
+        public void execute(String[] args) {
+            String target = args[1];
+            Integer top = operandStack.pop();
+            if (top == 0) {
+                programCounter = labelmap.get(target);
+            }
+        }
+    },
+
     ;
 
     abstract void execute(String[] args);
 
     private String name;
+    private static Boolean _DEBUG = false;
 
     private static final Map<String,ZeeOp> ENUM_MAP;
     private static final Stack operandStack;
+    private static final StringIntMap labelmap;
+    private static final StringIntMap variablemap;
     public static String printBuffer;
+    public static Integer programCounter;
 
     ZeeOp (String name) {
         this.name = name;
@@ -87,13 +138,37 @@ public enum ZeeOp {
         }
         ENUM_MAP = Collections.unmodifiableMap(map);
         operandStack = new Stack();
+        labelmap = new StringIntMap();
+        variablemap = new StringIntMap();
         printBuffer = "";
+        programCounter = 0;
     }
 
     public static ZeeOp get (String name) {
         return ENUM_MAP.getOrDefault(name.toLowerCase(), ZeeOp.ERR);
     }
 
+    public static void registerLabels(String[] source) {
+        int idx = 0;
+        for (String line : source) {
+            String[] tokens = line.split(" ");
+            if (ZeeOp.get(tokens[0]) == ZeeOp.LABEL) {
+                if (_DEBUG) System.err.printf("(L: %s %d\n", tokens[1], idx);
+                labelmap.put(tokens[1], idx);
+            }
+            idx++;
+        }
+    }
+    public static Integer pc() {
+        return programCounter;
+    }
+    public static void setPC(Integer n) {
+        programCounter = n;
+    }
+    // public static void declareVar(String name) {
+
+    // }
+    // public static Integer getVar
 }
 
 // Used inside of ZeeOp.

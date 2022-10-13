@@ -1,16 +1,22 @@
 package rocks.zipcode;
 
 public class ZeeEngine {
+    private Boolean _DEBUG = false;
 
     public String interpret(String lines) {
         ZeeOp op;
         String[] source = lines.split("\n");
-        Integer pc = 0;
+        
+        ZeeOp.registerLabels(source);
+        ZeeOp.programCounter = 0;
 
-        while (pc < source.length) {
-            String line = source[pc];
-            pc++;
-            
+        while (ZeeOp.programCounter < source.length) {
+            String line = source[ZeeOp.programCounter];
+
+            if (_DEBUG) System.err.printf("%d: %s\n", ZeeOp.programCounter, line);
+
+            ZeeOp.setPC(ZeeOp.programCounter + 1);
+
             op = this.interpretInstruction(line);
             if (op == ZeeOp.HALT) break;
             if (op == ZeeOp.PRINT) 
