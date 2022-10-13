@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * ZeeVM Ops v1.2 
+ * 
  * Each "instruction" (zee operation) has an execute method
  * which get called whenever op is found in code.
  * This uses static (class) variable for the Print Buffer to

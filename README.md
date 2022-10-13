@@ -42,7 +42,7 @@ Make it so that anything you add to `snowman` gets supported here in `ZeeVM`.
 
 The VM has a single stack of Integers (32 bit signed).
 
-The instructions of the VM.
+The instructions of the ZeeVM v1.0.
 
 - `START` - clears the stack of the VM
 - `HALT` - stops the VM
@@ -67,32 +67,31 @@ But `PUSH #5` means *push the literal number 5 to the stack*.
 You could also then make memory address literals special by prefixing an @. (as in a memory location like "@00004F7f")
 When you write the labs, you can make arbitrary design choices like this. :-)
 
-## Some extensions
-
-You cannot add these two extensions using `interface` and `implements`. The extension
-needs to use the stack within the enum. So you just have to add the ops and the code to the ZeeOp ENUM.
-
 ## Adding labels
 
-labelmap is a hashtable <string, integer>
+`labelmap` is a hashtable <string, integer>
 
 `LABEL name` - declares a label, using the line position in the file. store in labelmap
 `JUMP name` - sets the PC to the line postion of labelmap(name)+1, execution continues from there.
+`JMPZ name` - pops TOS and jumps to name if the value is zero
 
-And maybe add these to label support?
+YOU NEED to add these to the label support.
 
-`IFTRUE name` - pops TOS and jumps to name if the value is non-zero
-`IFFALSE name` - pops TOS and jumps to name is value is zero
+`JMPN name` - pops TOS and jumps to name is value is not zero
 
-the labelmap has to be created before the start. the source needs to be scanned for "LABEL name" lines, and the line number of the label need to be inserted into the labelmap.
+the `labelmap` has to be created before the start. 
+For labels to work, you have a "resolve them at runtime", meaning in the code there will be something like "JUMP ALABEL". Well, where is "ALABEL"? What line is it on?
+You need to scan the code and resolve the labels.
+
+`registerLabels()` - the source needs to be scanned for "LABEL name" lines, and the line number of the label need to be inserted into the `labelmap`.
 
 jumping then becomes looking up the labelname and getting the line number. then the PC needs to be set so that the next instruction read and interpreted is the one right after the label.
 
 ## Adding variables
 
-variablemap is a hash table <string, intger>
+`variablemap` is a hash table <string, intger>
 
-`STORE name` - pop from stack and store in variablemap as <name, value>
+`STORE name` - pops from stack and store value in variablemap as <name, value>
 `LOAD name` - gets variable name from variablemap and pushes it to stack
 
 so if you wanted to do something line `(VAR X 5)` in Snowman, you might generate code that
@@ -119,3 +118,29 @@ and of course, if you wanted to do `(VAR X (ADD X 7))`, you would gen code like
     ADD
     STORE X
 ```
+
+## Some New Functionality in v1.2
+
+Currently the ZeeVM supports LABELs and LOAD/STORE of alpha-named variables.
+
+```
+        PUSH #9
+        STORE X
+        ;; and
+        LOAD X
+        PRINT
+        ;; should display 9 in output.
+```
+
+and labels and jumps like this infinite loop.
+
+```
+        LABEL FOO
+        ;; bunch of code
+        JUMP FOO
+```
+
+*Gee?* so how do I avoid using JUMP (which is really a GOTO, isn't it?)?
+
+Well, there is also conditional jump called `JMPZ FOO` which pops the stack and if the value there is equal to zero, the jump happens (jumping to where FOO is declared with a LABEL). Otherwise, the next instruction after the jump is done.
+
