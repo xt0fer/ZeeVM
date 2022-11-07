@@ -1,4 +1,4 @@
-# ZeeVM
+# ZeeVM v1.2
 a Very simple virtual machine. Based on a stack for expression evaluation. Uses _reverse polish_ model.
 
 Three classes: ZeeVM, ZeeEngine, and ZeeOp.
