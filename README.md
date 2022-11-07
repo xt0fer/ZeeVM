@@ -1,7 +1,7 @@
 # ZeeVM
-a Very simple virtual machine.
+a Very simple virtual machine. Based on a stack for expression evaluation. Uses _reverse polish_ model.
 
-Three classes. 
+Three classes: ZeeVM, ZeeEngine, and ZeeOp.
 
 ### ZeeVM
 
@@ -32,13 +32,15 @@ There is also a hashmap of strings to operations, so that the string input from 
 
 ### What do I do?
 
+**Add some capability to this code.**
+
 Just like in https://github.com/xt0fer/Snowman, your job is to add `multiply`, `divide` and `mod` to the VM so it can handle code generated from your modified `snowman` compiler.
 
 Make it so that anything you add to `snowman` gets supported here in `ZeeVM`.
 
 *Java's VM and compiler, while a **Lot More** complicated, is pretty much like these two projects.*
 
-## ZeeVM Instructions
+## ZeeVM Internal Instructions
 
 The VM has a single stack of Integers (32 bit signed).
 
@@ -53,7 +55,8 @@ The instructions of the ZeeVM v1.0.
 - `ADD` - pops the top 2 integers, adds them, and pushes the sum back onto the stack
 - `SUB` - pops the top 2 integers and substracts the first one from the second
   - (as in:  x<-pop(), y<-pop(), push(y-x). this is because the source was (SUBTRACT y x) )
-
+- `DUPE` - duplicates the top of the stack
+  - (as in: x<-pop), push(x), push(x). this leaves a copy of x on the top of the stack)
 
 ### Confused about #4 ?
 
@@ -144,3 +147,16 @@ and labels and jumps like this infinite loop.
 
 Well, there is also conditional jump called `JMPZ FOO` which pops the stack and if the value there is equal to zero, the jump happens (jumping to where FOO is declared with a LABEL). Otherwise, the next instruction after the jump is done.
 
+
+```
+        LABEL FOO
+        ;; bunch of code
+        ;; some math leaves either a 0 or something else on the top of the stack
+        JMPZ BAR ;; if the top of stack is zero, jump to BAR
+        ;; some more code
+        JUMP FOO ;; jump to top of loop
+        ;;
+        LABEL BAR
+```
+
+And there are a bunch of patterns which can be used to handle FOR loops, WHILE loops, etc.

@@ -7,8 +7,8 @@ public class ZeeEngine {
         ZeeOp op;
         String[] source = lines.split("\n");
         
+        ZeeOp.initialize();
         ZeeOp.registerLabels(source);
-        ZeeOp.programCounter = 0;
 
         while (ZeeOp.programCounter < source.length) {
             String line = source[ZeeOp.programCounter];
@@ -19,9 +19,7 @@ public class ZeeEngine {
 
             op = this.interpretInstruction(line);
             if (op == ZeeOp.HALT) break;
-            if (op == ZeeOp.PRINT) 
-                System.out.println(ZeeOp.printBuffer);
-            if (op == ZeeOp.ERR) {
+            if ((op == ZeeOp.PRINT)||(op == ZeeOp.ERR)) {
                 System.out.println(ZeeOp.printBuffer);
                 break; // halt on error.
             }

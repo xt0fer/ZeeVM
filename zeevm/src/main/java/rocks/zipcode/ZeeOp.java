@@ -167,10 +167,13 @@ public enum ZeeOp {
     public static void setPC(Integer n) {
         programCounter = n;
     }
-    // public static void declareVar(String name) {
-
-    // }
-    // public static Integer getVar
+    public static void initialize() {
+        programCounter = 0;
+        printBuffer = "";
+        operandStack.clear();
+        labelmap.clear();
+        variablemap.clear();
+    }
 }
 
 // Used inside of ZeeOp.
@@ -205,5 +208,8 @@ class StringIntMap {
     public Integer get(String key) {
         Integer i = map.getOrDefault(key, 0);
         return i;
+    }
+    public void clear() {
+        map.clear();
     }
 }

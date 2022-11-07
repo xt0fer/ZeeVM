@@ -14,28 +14,33 @@ public class ZeeVM
 {
     public static void main( String[] args ) 
     {
-		Scanner scanner;
+        ZeeEngine engine = new ZeeEngine();
+
+        String inputSource = ZeeVM.processInput("./testinput.zvm");
+        String result = engine.interpret(inputSource);
+        System.out.println(result);
+}
+
+    public static String processInput(String filename) {
+
+        Scanner scanner;
         try {
-            scanner = new Scanner(new File("./testinput.zvm"));
+            scanner = new Scanner(new File(filename));
             StringBuilder input = new StringBuilder();
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine().trim().toLowerCase();
                 if (line.isEmpty()) continue;
                 // if line is comment, drop it.
-                if (line.startsWith(";;")) continue;
-                if (line.startsWith("//")) continue;
+                if (line.startsWith(";;")) continue; // handle two kinds of
+                if (line.startsWith("//")) continue; // comments...
                 input.append(line + "\n");
             }
             scanner.close();
-
-            ZeeEngine engine = new ZeeEngine();
-            String result = engine.interpret(input.toString());
-            System.out.println(result);
-
+            return input.toString();
         } catch (FileNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
- 
+        return null;
     }
 }
