@@ -61,11 +61,16 @@ public enum ZeeOp {
         public void execute(String[] args) {
             // in this Op, args[1] will be like "#4",
             // need to strip "# and parse to Integer"
-            int arg = Integer.parseInt(args[1].substring(1, args[1].length()));
-            operandStack.push(arg);
+            // the substring does the strip
+            try {
+                int arg = Integer.parseInt(args[1].substring(1, args[1].length()));
+                operandStack.push(arg);
+            } catch (Exception e) {
+                System.err.printf("ZeeVM Push: Unable to parse Integr from string [%s]", args[1]);
+            }
         }
     },
-    // etc...
+
     DUPE("dupe"){ // duplicate the top of the stack
         public void execute(String[] args) {
             Integer i = operandStack.pop();
@@ -108,6 +113,11 @@ public enum ZeeOp {
         }
     },
 
+    // etc...
+    // etc...
+    // etc...
+    // as in, Add your code here....
+
     ;
 
     abstract void execute(String[] args);
@@ -116,7 +126,7 @@ public enum ZeeOp {
     private static Boolean _DEBUG = false;
 
     private static final Map<String,ZeeOp> ENUM_MAP;
-    private static final Stack operandStack;
+    private static final IntegerStack operandStack;
     private static final StringIntMap labelmap;
     private static final StringIntMap variablemap;
     public static String printBuffer;
@@ -139,9 +149,9 @@ public enum ZeeOp {
             map.put(instance.getName().toLowerCase(),instance);
         }
         ENUM_MAP = Collections.unmodifiableMap(map);
-        operandStack = new Stack();
-        labelmap = new StringIntMap();
-        variablemap = new StringIntMap();
+        operandStack = new IntegerStack(); //
+        labelmap = new StringIntMap();     // see below
+        variablemap = new StringIntMap();  //
         printBuffer = "";
         programCounter = 0;
     }
@@ -177,7 +187,7 @@ public enum ZeeOp {
 }
 
 // Used inside of ZeeOp.
-class Stack {
+class IntegerStack {
     ArrayList<Integer> stack = new ArrayList<>();
     void clear() { stack.clear(); }
     void push(Integer n) {
@@ -186,7 +196,7 @@ class Stack {
     }
     Integer pop() {
             try {
-                if (stack.isEmpty()) throw new Exception("ZeeVM Stack Underflow");
+                if (stack.isEmpty()) throw new Exception("ZeeVM IntegerStack Underflow");
             } catch (Exception e) {
                 System.err.println(e);
                 e.printStackTrace();
