@@ -160,3 +160,19 @@ Well, there is also conditional jump called `JMPZ FOO` which pops the stack and 
 ```
 
 And there are a bunch of patterns which can be used to handle FOR loops, WHILE loops, etc.
+
+## some v1.3 new functionality
+
+Added a TEST op code (single integer literal argument). 
+```
+;; check top, if equal to 4, do nothing, else throw new RuntimeException
+  TEST 4
+```
+
+Used like:
+
+```
+  PUSH #5
+  TEST 4
+;; should throw new RuntimeException, was expecting 4, but got 5...
+```

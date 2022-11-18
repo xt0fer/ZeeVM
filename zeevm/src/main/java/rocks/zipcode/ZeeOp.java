@@ -103,6 +103,7 @@ public enum ZeeOp {
             ZeeOp.programCounter = labelmap.get(target);
         }
     },
+    // JUMP to LABEL args[1] if top equals 0
     JMPZ("jmpz"){
         public void execute(String[] args) {
             String target = args[1];
@@ -112,7 +113,20 @@ public enum ZeeOp {
             }
         }
     },
-
+    // if top DOESNT equals args[1], throw RuntimeException
+    TEST("test") {
+        public void execute(String[] args) {
+            String expected = args[1];
+            Integer top = operandStack.peek();
+            String actual = String.valueOf(top);
+            if (expected.equals(actual) == false) {
+                String es = String.format(
+                    "ZeeVM: TEST op code failed TEST, expected [%s] but actual was [%s]",
+                    expected, actual);
+                throw new RuntimeException(es);
+            }
+        }
+    }
     // etc...
     // etc...
     // etc...
@@ -190,20 +204,29 @@ public enum ZeeOp {
 class IntegerStack {
     ArrayList<Integer> stack = new ArrayList<>();
     void clear() { stack.clear(); }
+    boolean notEmpty() {
+        try {
+            if (stack.isEmpty()) throw new Exception("ZeeVM IntegerStack Underflow");
+        } catch (Exception e) {
+            System.err.println(e);
+            e.printStackTrace();
+        }
+        return true;
+    }
     void push(Integer n) {
-        //System.err.println("push "+n);
         stack.add(n);
     }
     Integer pop() {
-            try {
-                if (stack.isEmpty()) throw new Exception("ZeeVM IntegerStack Underflow");
-            } catch (Exception e) {
-                System.err.println(e);
-                e.printStackTrace();
-            }
+        if (notEmpty());
         int n = stack.remove(stack.size() - 1);
-        //System.err.println("pop "+n);
         return n;
+    }
+    Integer peek() {
+        if (notEmpty());
+        return stack.get(stack.size() - 1);
+    }
+    void dup() {
+        stack.add(peek());
     }
 }
 

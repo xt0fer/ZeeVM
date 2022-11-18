@@ -6,7 +6,7 @@ class ZeeEngineTest {
 
     @org.junit.jupiter.api.Test
     void interpret0() {
-        String input = "start\npush #2\npush #4\npush #2\nsubtract\nadd\nprint\nhalt\n";
+        String input = "start\npush #2\npush #4\npush #2\nsubtract\nadd\ntest 4\nprint\nhalt\n";
         String expected = "4";
 
         ZeeEngine testEngine = new ZeeEngine();

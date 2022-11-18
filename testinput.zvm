@@ -12,6 +12,8 @@ DEBUG Start normal test
                 PUSH #2
                 SUBTRACT
                 ADD
+;; TEST 4
+;; TEST 5
                 PRINT
 ;; test store/load
 DEBUG test load store
