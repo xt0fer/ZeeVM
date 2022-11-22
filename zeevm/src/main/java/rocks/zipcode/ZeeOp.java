@@ -57,16 +57,22 @@ public enum ZeeOp {
             if (_DEBUG) System.err.println( String.join(" ", args));
         }
     },
+    STACK("stack"){
+        public void execute(String[] args) {
+            System.out.println("Stack: "+operandStack.toString());
+        }
+    },
     PUSH("push"){
         public void execute(String[] args) {
             // in this Op, args[1] will be like "#4",
             // need to strip "# and parse to Integer"
             // the substring does the strip
             try {
+                System.out.println(">> Debug args len "+String.join("/",args));
                 int arg = Integer.parseInt(args[1].substring(1, args[1].length()));
                 operandStack.push(arg);
             } catch (Exception e) {
-                System.err.printf("ZeeVM Push: Unable to parse Integr from string [%s]", args[1]);
+                System.err.printf("ZeeVM Push: Unable to parse Integer from string [%s]", args[1]);
             }
         }
     },
@@ -227,6 +233,10 @@ class IntegerStack {
     }
     void dup() {
         stack.add(peek());
+    }
+
+    public String toString() {
+        return String.join(", ", stack.toString());
     }
 }
 
