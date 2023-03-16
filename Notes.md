@@ -4,7 +4,7 @@
 
 Introduction...
 
-## Second HEading
+## Second Heading
 
 skdkashkjhs skjdh akjshd akjhd askjhda kjhd asjhg da
 
